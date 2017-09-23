@@ -38,6 +38,7 @@ bool CheckStorage(const DWORDLONG diskSpaceNeeded) {
 bool CheckMemory(const DWORDLONG physicalRAMNeeded, const
 	DWORDLONG virtualRAMNeeded) {
 	MEMORYSTATUSEX status;
+	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
 	cout << "Physical RAM : " << status.ullTotalPhys << endl;
 	if (status.ullTotalPhys < physicalRAMNeeded) {
@@ -63,7 +64,7 @@ DWORD ReadCPUSpeed() {
 	DWORD BufSize = sizeof(DWORD);
 	DWORD dwMHz = 0;
 	DWORD type = REG_DWORD;
-	string arch;
+	char arch[256];
 	HKEY hKey;
 	// open the key where the proc speed is hidden: 
 	long lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE,"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0,
@@ -71,7 +72,13 @@ DWORD ReadCPUSpeed() {
 	if (lError == ERROR_SUCCESS) {
 		// query the key:  
 		RegQueryValueEx(hKey, "~MHz", NULL, &type, (LPBYTE)&dwMHz, &BufSize);
-		RegQueryValueEx(hKey, "ProcessorNameString", NULL, &type, (LPBYTE)&arch, &BufSize);
+		
+	}
+	lError = RegQueryValueEx(hKey, "ProcessorNameString", NULL, &type, (LPBYTE)&arch, &BufSize);
+	while (lError == ERROR_MORE_DATA)
+	{
+		BufSize++;
+		lError = RegQueryValueEx(hKey, "ProcessorNameString", NULL, &type, (LPBYTE)&arch, &BufSize);
 	}
 	cout << "CPU Architecture: " << arch << endl;
 	return dwMHz;
