@@ -18,5 +18,22 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpecialAbilityComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbilityInterface.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialAbilityComponent.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentId.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
